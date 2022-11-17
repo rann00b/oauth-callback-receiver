@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000;
 
 app.use('/api/callback', (req, res) => {
     console.log(JSON.stringify({
-        params: req.params,
+        params: req.query,
         headers: req.headers,
         body: req.body,
     }, null, 2))
