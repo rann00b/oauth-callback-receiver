@@ -11,22 +11,24 @@ app.use('/callback', async (req, res) => {
         return res.end('Parameter "code" is is missing.');
 
     try {
-        const response = await got.post('https://github.com/login/oauth/access_token', {
+        const response = await got.post('https://github.com/login/oauth/access_token', { 
             headers: {
-                Accept: 'application/json'
+                Accept: 'application/json',
             },
             searchParams: {
                 code,
                 client_id: process.env.CLIENT_ID,
                 client_secret: process.env.CLIENT_SECRET,
-            },
-        })
+            }
+        }).json()
+        // const responseObj = Object.fromEntries(response.split('&').map(pair => pair.split('=')))
+        // console.log({ responseObj })
 
         console.log({ response })
 
-        res.end('Your access token is: ', response)
+        res.end('Your access token is: ' + response.access_token)
     } catch (error) {
-        console.log({ error })
+        console.log(error)
         res.end('Failed to get your access token :(')
     }
 })
