@@ -1,11 +1,11 @@
 const express = require('express');
-const morgan = require('morgan');
-
+const logging = require('express-logging');
+const logger = require('logops');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(morgan('combined'))
+app.use(logging(logger))
 app.use('/api/callback', (req, res) => {
     res.end('Callback received.')
 })
