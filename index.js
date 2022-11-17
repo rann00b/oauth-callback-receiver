@@ -10,6 +10,8 @@ app.use('/callback', async (req, res) => {
     if (!code || typeof code !== 'string')
         return res.end('Parameter "code" is is missing.');
 
+    console.log({ env: process.env })
+
     const { access_token } = await axios({
         method: 'post',
         url: 'https://github.com/login/oauth/access_token',
