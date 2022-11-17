@@ -12,14 +12,15 @@ app.use('/callback', async (req, res) => {
 
     console.log({ env: process.env })
 
-    const response = await axios({
+    const response = await axios.default({
         method: 'post',
         url: 'https://github.com/login/oauth/access_token',
         params: {
             code,
             client_id: process.env.CLIENT_ID,
             client_secret: process.env.CLIENT_SECRET,
-        }
+        },
+        responseType: 'text'
     })
 
     console.log({ response })
