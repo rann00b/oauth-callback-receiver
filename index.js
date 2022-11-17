@@ -12,7 +12,7 @@ app.use('/callback', async (req, res) => {
 
     console.log({ env: process.env })
 
-    const { access_token } = await axios({
+    const response = await axios({
         method: 'post',
         url: 'https://github.com/login/oauth/access_token',
         params: {
@@ -22,7 +22,9 @@ app.use('/callback', async (req, res) => {
         }
     })
 
-    res.end('Your access token is: ', access_token)
+    console.log({ response })
+
+    res.end('Your access token is: ', response)
 })
 
 app.listen(port, () => {
