@@ -18,8 +18,6 @@
   },
   "homepage": "https://github.com/rann00b/oauth-callback-receiver#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "express-logging": "^1.1.1",
-    "logops": "^2.1.2"
+    "express": "^4.18.2"
   }
 }
