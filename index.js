@@ -1,16 +1,26 @@
 const express = require('express');
+const axios = require('axios').default;
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use('/callback', (req, res) => {
-    console.log(JSON.stringify({
-        params: req.query,
-        headers: req.headers,
-        body: req.body,
-    }, null, 2))
+app.use('/callback', async (req, res) => {
+    const code = req.query.code
 
-    res.end('Callback received.')
+    if (!code || typeof code !== 'string')
+        return res.end('Parameter "code" is is missing.');
+
+    const { access_token } = await axios({
+        method: 'post',
+        url: 'https://github.com/login/oauth/access_token',
+        params: {
+            code,
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+        }
+    })
+
+    res.end('Your access token is: ', access_token)
 })
 
 app.listen(port, () => {
