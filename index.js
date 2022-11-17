@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use('/api/callback', (req, res) => {
+app.use('/callback', (req, res) => {
     console.log(JSON.stringify({
         params: req.query,
         headers: req.headers,
