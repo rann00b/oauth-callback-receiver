@@ -13,7 +13,7 @@ app.use('/callback', async (req, res) => {
     console.log({ env: process.env })
 
     try {
-        const response = await axios.default({
+        const response = await axios({
             method: 'post',
             url: 'https://github.com/login/oauth/access_token',
             params: {
@@ -21,7 +21,7 @@ app.use('/callback', async (req, res) => {
                 client_id: process.env.CLIENT_ID,
                 client_secret: process.env.CLIENT_SECRET,
             },
-            responseType: 'text'
+            transformResponse: [data => data],
         })
 
         console.log({ response })
@@ -30,7 +30,7 @@ app.use('/callback', async (req, res) => {
     } catch (error) {
         console.log({ error })
         res.end('Failed to get your access token :(')
-    } 
+    }
 })
 
 app.listen(port, () => {
