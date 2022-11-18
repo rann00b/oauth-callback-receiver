@@ -24,9 +24,9 @@ app.use('/callback', async (req, res) => {
 
         res.type('html')
         res.send(`
-            <div>You are now connected to GitHub.</div>
+            <div>You are now connected to GitHub!</div>
             <script>
-                window.opener._connectSuccess('${response.access_token}')
+                window.opener.postMessage('${response.access_token}', '*')
             </script>
         `)
     } catch (error) {
