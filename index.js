@@ -21,12 +21,14 @@ app.use('/callback', async (req, res) => {
                 client_secret: process.env.CLIENT_SECRET,
             }
         }).json()
-        // const responseObj = Object.fromEntries(response.split('&').map(pair => pair.split('=')))
-        // console.log({ responseObj })
 
-        console.log({ response })
-
-        res.end('Your access token is: ' + response.access_token)
+        res.type('html')
+        res.send(`
+            <div>You are now connected to GitHub.</div>
+            <script>
+                window.opener._connectSuccess('${response.access_token}')
+            </script>
+        `)
     } catch (error) {
         console.log(error)
         res.end('Failed to get your access token :(')
