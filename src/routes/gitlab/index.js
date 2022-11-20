@@ -13,7 +13,7 @@ export function gitlabRoute(app) {
     const cookieOptions = { maxAge: 1000 * 60 * 5 };
     const query = qs.stringify({
       client_id: process.env.GITLAB_CLIENT_ID,
-      redirect: 'https://oauth-callback-receiver.vercel.app/gitlab/callback',
+      redirect_uri: 'https://oauth-callback-receiver.vercel.app/gitlab/callback',
       response_type: 'code',
       state,
       scope: 'api read_api read_user read_repository write_repository',
