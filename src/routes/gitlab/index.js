@@ -7,7 +7,7 @@ import qs from 'qs';
  * @param {import('express').Application} app
  */
 export function gitlabRoute(app) {
-  app.post('/gitlab/authorize', (req, res) => {
+  app.use('/gitlab/authorize', (req, res) => {
     const challenge = pkce.default();
     const state = nanoid();
     const cookieOptions = { maxAge: 1000 * 60 * 5 };
