@@ -7,10 +7,11 @@ import qs from 'qs';
  * @param {import('express').Application} app
  */
 export function gitlabRoute(app) {
+  const states = {};
+
   app.use('/gitlab/authorize', (req, res) => {
     const challenge = pkce.default();
     const state = nanoid();
-    const cookieOptions = { maxAge: 1000 * 60 * 5 };
     const query = qs.stringify({
       client_id: process.env.GITLAB_CLIENT_ID,
       redirect_uri: 'https://oauth-callback-receiver.vercel.app/gitlab/callback',
@@ -21,8 +22,8 @@ export function gitlabRoute(app) {
       code_challenge: challenge.code_challenge,
     });
 
-    res.cookie('code_verifier', challenge.code_verifier, cookieOptions);
-    res.cookie('state', state, cookieOptions);
+    states[state] = { code_verifier: challenge.code_verifier };
+
     res.redirect('https://gitlab.com/oauth/authorize?' + query);
   });
 
@@ -32,7 +33,9 @@ export function gitlabRoute(app) {
 
     if (!code || typeof code !== 'string') return res.end('Parameter "code" is missing.');
     if (!state || typeof state !== 'string') return res.end('Parameter "state" is missing.');
-    if (!req.cookies.state) return res.end('Cookie "state" is missing.');
-    if (!req.cookies.code_verifier) return res.end('Cookie "code_verifier" is missing.');
+
+    if (!states[state]) res.end('State mismatch.');
+
+    console.log('fixed');
   });
 }
