@@ -1,3 +1,3 @@
-export * from './bitbucket';
-export * from './github';
-export * from './gitlab';
+export * from './bitbucket/index.js';
+export * from './github/index.js';
+export * from './gitlab/index.js';
