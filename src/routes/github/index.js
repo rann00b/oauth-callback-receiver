@@ -5,8 +5,7 @@ export function githubRoute(app) {
   app.use('/github/callback', async (req, res) => {
     const code = req.query.code;
 
-    if (!code || typeof code !== 'string')
-      return res.end('Parameter "code" is is missing.');
+    if (!code || typeof code !== 'string') return res.end('Parameter "code" is is missing.');
 
     try {
       const response = await got
@@ -27,6 +26,7 @@ export function githubRoute(app) {
         <div>You are now connected to GitHub!</div>
         <script>window.opener.postMessage('${response.access_token}', '*')</script>`);
     } catch (error) {
+      console.log(error);
       res.end('Failed to get your access token.');
     }
   });
