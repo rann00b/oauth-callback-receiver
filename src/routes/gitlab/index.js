@@ -23,9 +23,7 @@ export function gitlabRoute(app) {
 
     res.cookie('code_verifier', challenge.code_verifier, cookieOptions);
     res.cookie('state', state, cookieOptions);
-    // res.redirect('https://gitlab.com/oauth/authorize?' + query);
-
-    res.send(query);
+    res.redirect('https://gitlab.com/oauth/authorize?' + query);
   });
 
   app.use('/gitlab/callback', async (req, res) => {
