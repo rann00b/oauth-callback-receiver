@@ -2,8 +2,8 @@
  * @param {import('express').Application} app
  */
 export function bitbucketRoute(app) {
-  const clientId = process.env.BITBUCKET_KEY;
-  const clientSecret = process.env.BITBUCKET_SECRET;
+  const clientId = process.env.BITBUCKET_CLIENT_ID;
+  const clientSecret = process.env.BITBUCKET_CLIENT_SECRET;
   const digested = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
   app.use('/bitbucket/callback', async (req, res) => {
