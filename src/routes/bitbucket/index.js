@@ -11,7 +11,7 @@ export function bitbucketRoute(app) {
   app.use('/bitbucket/callback', async (req, res) => {
     const code = req.query.code;
 
-    if (!code || typeof code !== 'string') return res.end('Parameter "code" is is missing.');
+    if (!code || typeof code !== 'string') return res.end('Parameter "code" is missing.');
 
     try {
       const response = await got
@@ -34,7 +34,7 @@ export function bitbucketRoute(app) {
   app.post('/bitbucket/refresh_token', async (req, res) => {
     const refreshToken = req.query.refreshToken;
 
-    if (!refreshToken || typeof refreshToken !== 'string') return res.end('Parameter "refreshToken" is is missing.');
+    if (!refreshToken || typeof refreshToken !== 'string') return res.end('Parameter "refreshToken" is missing.');
 
     try {
       const response = await got

@@ -7,14 +7,12 @@ export function githubRoute(app) {
   app.use('/github/callback', async (req, res) => {
     const code = req.query.code;
 
-    if (!code || typeof code !== 'string') return res.end('Parameter "code" is is missing.');
+    if (!code || typeof code !== 'string') return res.end('Parameter "code" is missing.');
 
     try {
       const response = await got
         .post('https://github.com/login/oauth/access_token', {
-          headers: {
-            Accept: 'application/json',
-          },
+          headers: { Accept: 'application/json' },
           searchParams: {
             code,
             client_id: process.env.GITHUB_CLIENT_ID,
