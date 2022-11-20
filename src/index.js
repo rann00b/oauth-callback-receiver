@@ -11,7 +11,7 @@ Object.values(routes).forEach(route => {
 });
 
 app.use(cors());
-app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
+app.use(cookieParser());
 app.listen(port, () => {
   console.log(`Server is running in port ${port}`);
 });

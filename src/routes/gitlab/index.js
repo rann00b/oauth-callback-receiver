@@ -8,11 +8,9 @@ import qs from 'qs';
  */
 export function gitlabRoute(app) {
   app.post('/gitlab/authorize', (req, res) => {
-    console.log(process.env.COOKIE_PARSER_SECRET);
-
     const challenge = pkce.default();
     const state = nanoid();
-    const cookieOptions = { maxAge: 1000 * 60 * 5, signed: true };
+    const cookieOptions = { maxAge: 1000 * 60 * 5 };
     const query = qs.stringify({
       client_id: process.env.GITLAB_CLIENT_ID,
       redirect: 'https://oauth-callback-receiver.vercel.app/gitlab/callback',
