@@ -2,7 +2,7 @@
  * @param {import('express').Application} app
  */
 export function githubRoute(app) {
-  app.use('github/callback', async (req, res) => {
+  app.use('/github/callback', async (req, res) => {
     const code = req.query.code;
 
     if (!code || typeof code !== 'string')
