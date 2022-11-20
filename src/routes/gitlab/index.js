@@ -8,6 +8,8 @@ import qs from 'qs';
  */
 export function gitlabRoute(app) {
   app.post('/gitlab/authorize', (req, res) => {
+    console.log(process.env.COOKIE_PARSER_SECRET);
+
     const challenge = pkce.default();
     const state = nanoid();
     const cookieOptions = { maxAge: 1000 * 60 * 5, signed: true };
