@@ -42,7 +42,6 @@ export function gitlabRoute(app) {
         client_id: process.env.GITLAB_CLIENT_ID,
         code,
         grant_type: 'authorization_code',
-        redirect_uri: redirectUri,
         code_verifier: states[state].code_verifier,
       });
 
@@ -52,20 +51,19 @@ export function gitlabRoute(app) {
             client_id: process.env.GITLAB_CLIENT_ID,
             code,
             grant_type: 'authorization_code',
-            redirect_uri: redirectUri,
             code_verifier: states[state].code_verifier,
           },
         })
         .json();
 
-      console.log(response.data);
+      console.log(response);
 
       res.type('html');
       res.send(`
         <div>You are now connected to GitLab!</div>
         <script>window.opener.postMessage('${JSON.stringify(response)}', '*')</script>`);
     } catch (error) {
-      console.log(error.body);
+      console.log(error);
       console.log(`${error}`);
       res.end('Failed to get your access token.');
     }
