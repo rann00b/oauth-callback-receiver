@@ -48,7 +48,7 @@ export function gitlabRoute(app) {
 
       const response = await got
         .post('https://gitlab.com/oauth/token', {
-          json: {
+          searchParams: {
             client_id: process.env.GITLAB_CLIENT_ID,
             code,
             grant_type: 'authorization_code',
@@ -58,7 +58,7 @@ export function gitlabRoute(app) {
         })
         .json();
 
-      console.log(response);
+      console.log(response.data);
 
       res.type('html');
       res.send(`
