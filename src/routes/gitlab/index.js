@@ -38,6 +38,14 @@ export function gitlabRoute(app) {
     if (!states[state]) res.end('State mismatch.');
 
     try {
+      console.log({
+        client_id: process.env.GITLAB_CLIENT_ID,
+        code,
+        grant_type: 'authorization_code',
+        redirect_uri: redirectUri,
+        code_verifier: states[state].code_verifier,
+      });
+
       const response = await got
         .post('https://gitlab.com/oauth/token', {
           json: {
