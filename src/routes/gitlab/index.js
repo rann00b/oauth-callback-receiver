@@ -35,8 +35,7 @@ export function gitlabRoute(app) {
 
     if (!code || typeof code !== 'string') return res.end('Parameter "code" is missing.');
     if (!state || typeof state !== 'string') return res.end('Parameter "state" is missing.');
-
-    if (!states[state]) res.end('State mismatch.');
+    if (!states.has(state)) res.end('State mismatch.');
 
     try {
       const response = await got
