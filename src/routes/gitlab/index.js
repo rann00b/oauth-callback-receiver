@@ -65,6 +65,7 @@ export function gitlabRoute(app) {
         <div>You are now connected to GitLab!</div>
         <script>window.opener.postMessage('${JSON.stringify(response)}', '*')</script>`);
     } catch (error) {
+      console.log(error.body);
       console.log(`${error}`);
       res.end('Failed to get your access token.');
     }
