@@ -8,13 +8,14 @@ import qs from 'qs';
  */
 export function gitlabRoute(app) {
   const states = {};
+  const redirectUri = 'https://oauth-callback-receiver.vercel.app/gitlab/callback';
 
   app.use('/gitlab/authorize', (req, res) => {
     const challenge = pkce.default();
     const state = nanoid();
     const query = qs.stringify({
       client_id: process.env.GITLAB_CLIENT_ID,
-      redirect_uri: 'https://oauth-callback-receiver.vercel.app/gitlab/callback',
+      redirect_uri: redirectUri,
       response_type: 'code',
       state,
       scope: 'api read_api read_user read_repository write_repository',
@@ -36,6 +37,28 @@ export function gitlabRoute(app) {
 
     if (!states[state]) res.end('State mismatch.');
 
-    console.log('fixed');
+    try {
+      const response = await got
+        .post('https://gitlab.com/oauth/token', {
+          searchParams: {
+            client_id: process.env.GITLAB_CLIENT_ID,
+            code,
+            grant_type: 'authorization_code',
+            redirect_uri: redirectUri,
+            code_verifier: states[state].code_verifier,
+          },
+        })
+        .json();
+
+      console.log(response);
+
+      res.type('html');
+      res.send(`
+        <div>You are now connected to GitLab!</div>
+        <script>window.opener.postMessage('${JSON.stringify(response)}', '*')</script>`);
+    } catch (error) {
+      console.log(error);
+      res.end('Failed to get your access token.');
+    }
   });
 }
