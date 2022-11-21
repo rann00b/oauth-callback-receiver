@@ -40,6 +40,7 @@ export function gitlabRoute(app) {
     try {
       const response = await got
         .post('https://gitlab.com/oauth/token', {
+          headers: { 'Content-Type': 'application/json' },
           body: {
             client_id: process.env.GITLAB_CLIENT_ID,
             code,
