@@ -7,7 +7,7 @@ import qs from 'qs';
  * @param {import('express').Application} app
  */
 export function gitlabRoute(app) {
-  const states = {};
+  const states = new Map();
   const redirectUri = 'https://oauth-callback-receiver.vercel.app/gitlab/callback';
 
   app.use('/gitlab/authorize', (req, res) => {
@@ -19,11 +19,12 @@ export function gitlabRoute(app) {
       response_type: 'code',
       state,
       scope: 'api read_api read_user read_repository write_repository',
-      code_challenge_method: 'S256',
-      code_challenge: challenge.code_challenge,
+      // code_challenge_method: 'S256',
+      // code_challenge: challenge.code_challenge,
     });
 
-    states[state] = { code_verifier: challenge.code_verifier };
+    states.set(state, true);
+    // states[state] = { code_verifier: challenge.code_verifier };
 
     res.redirect('https://gitlab.com/oauth/authorize?' + query);
   });
@@ -38,20 +39,15 @@ export function gitlabRoute(app) {
     if (!states[state]) res.end('State mismatch.');
 
     try {
-      console.log({
-        client_id: process.env.GITLAB_CLIENT_ID,
-        code,
-        grant_type: 'authorization_code',
-        code_verifier: states[state].code_verifier,
-      });
-
       const response = await got
         .post('https://gitlab.com/oauth/token', {
           searchParams: {
             client_id: process.env.GITLAB_CLIENT_ID,
+            client_secret: process.env.GITLAB_CLIENT_SECRET,
             code,
             grant_type: 'authorization_code',
-            code_verifier: states[state].code_verifier,
+            redirect_uri: redirectUri,
+            // code_verifier: states[state].code_verifier,
           },
         })
         .json();
